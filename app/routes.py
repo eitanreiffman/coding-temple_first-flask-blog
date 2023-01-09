@@ -3,7 +3,8 @@ from flask import render_template
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    fruits = ['apple', 'banana', 'orange', 'mango']
+    return render_template('index.html', name = 'Shira', fruits = fruits)
 
 @app.route('/posts')
 def posts():
