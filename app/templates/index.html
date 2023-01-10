@@ -5,6 +5,8 @@
 
     <h1>Hello {{ name }} Reiffman from the Index Template!</h1>
     <h1>My favorite fruits are:</h1>
-    <h1>{{fruits}}</h1>
+    {% for f in fruits %}
+    <h1>{{ f }}</h1>
+    {% endfor %}
 
 {% endblock content %}
