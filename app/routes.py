@@ -4,8 +4,7 @@ from app.forms import SignUpForm
 
 @app.route('/')
 def index():
-    fruits = ['apple', 'banana', 'orange', 'mango']
-    return render_template('index.html', name = 'Shira', fruits = fruits)
+    return render_template('index.html', name = 'Shira')
 
 @app.route('/posts')
 def posts():
