@@ -1,11 +1,11 @@
 from app import app
 from flask import render_template, redirect, url_for, flash
-from app.forms import SignUpForm
+from app.forms import SignUpForm, LoginForm
 from app.models import User
 
 @app.route('/')
 def index():
-    return render_template('index.html', name = 'Shira')
+    return render_template('index.html')
 
 @app.route('/posts')
 def posts():
@@ -47,6 +47,7 @@ def sign_up():
         
     return render_template('sign_up.html', form = form)
 
-@app.route('/log_in')
+@app.route('/log_in', methods=['GET','POST'])
 def log_in():
-    return render_template('log_in.html')
+    form = LoginForm()
+    return render_template('log_in.html', form = form)
