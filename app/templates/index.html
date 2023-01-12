@@ -3,6 +3,14 @@
 
 {% block content %}
 
-    <h1 class="text-center">Hello, welcome to the Kekambas Blog!</h1>
+{% if current_user.is_authenticated %}
+
+    <h1 class="text-center">Welcome back, {{ current_user.username }}</h1>
+
+{% else %}
+
+    <h1 class="text-center">Hello World</h1>
+
+{% endif %}
 
 {% endblock content %}

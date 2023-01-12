@@ -1,5 +1,6 @@
 from app import app
 from flask import render_template, redirect, url_for, flash
+from flask_login import login_user, logout_user
 from app.forms import SignUpForm, LoginForm
 from app.models import User
 
@@ -50,4 +51,24 @@ def sign_up():
 @app.route('/log_in', methods=['GET','POST'])
 def log_in():
     form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        print(username, password)
+
+        user = User.query.filter_by(username=username).first()
+        if user is not None and user.check_password(password):
+            login_user(user)
+            flash(f"{user.username} is now logged in!", "warning")
+            return redirect(url_for('index'))
+        else:
+            flash("Incorrect username and/or password", "danger")
+            redirect(url_for('log_in'))
+
     return render_template('log_in.html', form = form)
+
+@app.route('/log_out')
+def logout():
+    logout_user()
+    flash("You have been logged out", "warning")
+    return redirect(url_for('index'))
