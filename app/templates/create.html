@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} Create Post {% endblock title %}
+
+{% block content %}
+
+<form action="" class="bg-warning rounded mt-4 p-5" method="POST">
+
+    <h1 class="text-center">Create a Post!</h1>
+
+    {{ form.csrf_token }}
+
+    {{ form.title.label }}
+    {{ form.title(class='form-control', placeholder='Enter Title') }}
+
+    {{ form.body.label }}
+    {{ form.body(class='form-control', placeholder='Enter Body') }}
+
+    {{ form.submit(class='btn btn-dark w-100 mt-3') }}
+
+</form>
+
+{% endblock content %}
