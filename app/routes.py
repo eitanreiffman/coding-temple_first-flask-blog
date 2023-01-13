@@ -103,4 +103,10 @@ def edit_post(post_id):
         flash("You do not have permission to edit this post", "danger")
         return redirect(url_for('index'))
     form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        body = form.body.data
+        post.update(title=title, body=body)
+        flash(f"Your post has been updated!", "success")
+        return redirect(url_for('get_post', post_id=post.id))
     return render_template('edit_post.html', post=post, form=form)
