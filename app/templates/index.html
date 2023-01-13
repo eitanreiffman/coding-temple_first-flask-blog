@@ -22,6 +22,7 @@
         <p>{{ post.body }}</p>
         <footer class="blockquote-footer">{{ post.author.username }}<cite title="Source Title"><br>{{ post.date_created.strftime('%A %B %d at %I:%Mp') }}</cite></footer>
       </blockquote>
+      <a href="{{ url_for('get_post', post_id=post.id) }}" class="btn btn-primary mt-3">See More</a>
     </div>
   </div>
 

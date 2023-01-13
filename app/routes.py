@@ -9,10 +9,6 @@ def index():
     posts = Post.query.all()
     return render_template('index.html', posts=posts)
 
-@app.route('/posts')
-def posts():
-    return render_template('posts.html')
-
 @app.route('/sign_up', methods=['GET','POST'])
 def sign_up():
     # Create an instance of the SignUpForm class
@@ -85,3 +81,26 @@ def create_post():
         new_post = Post(title=title, body=body, user_id=current_user.id)
         flash(f"Your post '{new_post.title}' has been created!", "success")
     return render_template('create.html', form = form)
+
+
+@app.route('/posts/<int:post_id>')
+def get_post(post_id):
+    # post = Post.query.get_or_404(post_id)
+    post = Post.query.get(post_id)
+    if not post:
+        flash(f"A post with id {post_id} does not exist", "danger")
+        return redirect(url_for('index'))
+    return render_template('post.html', post=post)
+
+@app.route('/posts/<post_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_post(post_id):
+    post = Post.query.get(post_id)
+    if not post:
+        flash(f"A post with id {post_id} does not exist", "danger")
+        return redirect(url_for('index'))
+    if post.author != current_user:
+        flash("You do not have permission to edit this post", "danger")
+        return redirect(url_for('index'))
+    form = PostForm()
+    return render_template('edit_post.html', post=post, form=form)

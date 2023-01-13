@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit Post {% endblock title %}
+
+{% block content %}
+
+<form action="" class="bg-warning rounded mt-4 p-5" method="POST">
+
+    <h1 class="text-center">Edit a Post!</h1>
+
+    {{ form.csrf_token }}
+
+    {{ form.title.label }}
+    {{ form.title(class='form-control', value=post.title) }}
+
+    {{ form.body.label }}
+    {{ form.body(class='form-control', value=post.body) }}
+
+    {{ form.submit(class='btn btn-dark w-100 mt-3') }}
+
+</form>
+
+{% endblock content %}
