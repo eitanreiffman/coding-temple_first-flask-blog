@@ -1,11 +1,14 @@
 from flask import request
 from . import api
-from app.models import Post
-from app.models import User
+from .auth import basic_auth, token_auth
+from app.models import Post, User
 
-@api.route('/')
+@api.route('/token')
+@basic_auth.login_required
 def index():
-    return 'Hello this is the API'
+    user = basic_auth.current_user()
+    token = user.get_token()
+    return {'token': token, 'token_expiration': user.token_expiration}
 
 @api.route('/posts', methods=['GET'])
 def get_posts():
@@ -18,19 +21,21 @@ def get_post(post_id):
     return post.to_dict()
 
 @api.route('/posts', methods=['POST'])
+@token_auth.login_required
 def create_post():
     if not request.is_json:
         return {'error': 'Your request content-type must be application/json'}, 400
     data = request.json
-    for field in ['title', 'body', 'user_id']:
+    for field in ['title', 'body']:
         if field not in data:
             return {'error': f'{field} must be in request body'}, 400
         
     title = data.get('title')
     body = data.get('body')
-    user_id = data.get('user_id')
 
-    new_post = Post(title=title, body=body, user_id=user_id)
+    user = token_auth.current_user()
+
+    new_post = Post(title=title, body=body, user_id=user.id)
     return new_post.to_dict(), 201
 
 @api.route('/users', methods=['GET'])
@@ -58,3 +63,4 @@ def create_user():
 
     new_user = User(email=email, username=username, password=password)
     return new_user.to_dict(), 201
+
