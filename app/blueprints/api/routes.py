@@ -58,5 +58,3 @@ def create_user():
 
     new_user = User(email=email, username=username, password=password)
     return new_user.to_dict(), 201
-
-
